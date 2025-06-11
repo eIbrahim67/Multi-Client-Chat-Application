@@ -6,6 +6,8 @@ The Multi-Client Chat Application is a robust, terminal-based real-time messagin
 
 This project was developed to demonstrate client-server architecture, multi-threaded programming, and secure database integration while providing a user-friendly terminal interface. It is actively maintained and tested as of June 2025.
 
+---
+
 ## Features
 
 ### Core Functionality
@@ -13,6 +15,8 @@ This project was developed to demonstrate client-server architecture, multi-thre
 - **Real-Time Messaging**: Broadcasts messages instantly to all authenticated users, with support for private messaging.
 - **Secure Authentication**: Integrates with SQL Server to manage user registration and login, using BCrypt for password hashing.
 - **Terminal-Based Interface**: Provides a simple, command-line interface for all interactions, ideal for console enthusiasts.
+
+---
 
 ### Enhanced Features
 - **List Online Users**: Users can type `/online` to view a list of currently connected users.
@@ -23,124 +27,114 @@ This project was developed to demonstrate client-server architecture, multi-thre
 - **Command Help Menu**: The `/help` command displays available commands (`/online`, `/msg`, `/exit`).
 - **Enhanced Server Logging**: Logs all significant events (connections, messages, authentication) to `server.log` for debugging and monitoring.
 
+---
+
+## Architecture Diagram
+
+```
++---------+       +--------+       +---------+
+| Client1 | <---> | Server | <---> | Client2 |
++---------+       +--------+       +---------+
+         \                          /
+          \                        /
+           +----------------------+
+                     |
+                 Database (SQL Server)
+```
+
+---
+
+---
+
 ## Prerequisites
 
-To run the application, ensure the following are installed and configured:
+* **Java Development Kit (JDK)**: Version 11 or higher (tested with OpenJDK 21.0.1).
+* **Microsoft SQL Server**: Running instance with `multi_client_chat_server` database.
+* **SQL Server JDBC Driver**: Version 12.10.0.
+* **BCrypt Library**: Version 0.4.
+* **Operating System**: Tested on Windows; Linux/macOS compatible.
 
-- **Java Development Kit (JDK)**: Version 11 or higher (tested with OpenJDK 21.0.1).
-- **Microsoft SQL Server**: A running instance (local or remote) with a database named `multi_client_chat_server`.
-- **SQL Server JDBC Driver**: Version 12.10.0 or compatible (e.g., `mssql-jdbc-12.10.0.jre11.jar`).
-- **BCrypt Library**: Version 0.4 for password hashing (e.g., `jbcrypt-0.4.jar`).
-- **Operating System**: Tested on Windows; compatible with Linux/macOS with minor path adjustments.
+---
 
 ## Setup Instructions
 
 ### 1. Database Configuration
-1. **Install SQL Server**:
-   - Ensure SQL Server is running on `localhost` (or update the JDBC URL in `DBHelper.java` if using a different host).
-   - Configure Windows Authentication or SQL Server Authentication as needed.
 
+1. **Install SQL Server** and ensure it is running.
 2. **Create Database**:
-   - Open SQL Server Management Studio (SSMS) and create a database:
-     ```sql
-     CREATE DATABASE multi_client_chat_server;
-     ```
+
+```sql
+CREATE DATABASE multi_client_chat_server;
+```
 
 3. **Create Users Table**:
-   - Execute the following SQL to create the `Users` table:
-     ```sql
-     CREATE TABLE Users (
-         username VARCHAR(50) PRIMARY KEY,
-         password VARCHAR(60)
-     );
-     ```
+
+```sql
+CREATE TABLE Users (
+    username VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(60)
+);
+```
 
 ### 2. Project Setup
-1. **Clone or Download**:
-   - Obtain the project source code from the repository or copy the provided files (`Server_1.java`, `Client_1.java`, `ClientHandler.java`, `DBHelper.java`).
 
-2. **Directory Structure**:
-   - Place all Java files in a `socket` package (e.g., `src/socket/`).
-   - Ensure dependencies (JDBC driver and BCrypt) are accessible.
-
-3. **Dependencies**:
-   - Download the SQL Server JDBC driver and BCrypt JARs, or use Maven:
-     ```xml
-     <dependency>
-         <groupId>com.microsoft.sqlserver</groupId>
-         <artifactId>mssql-jdbc</artifactId>
-         <version>12.10.0.jre11</version>
-     </dependency>
-     <dependency>
-         <groupId>org.mindrot</groupId>
-         <artifactId>jbcrypt</artifactId>
-         <version>0.4</version>
-     </dependency>
-     ```
-   - Place JARs in a known location (e.g., `C:\Users\<YourUser>\Desktop\sqljdbc_12.10\enu\jars\` and `C:\Users\<YourUser>\.m2\repository\org\mindrot\jbcrypt\0.4\`).
+1. **Clone/Download** project.
+2. Place Java files under `src/socket/`.
+3. Add dependencies (JDBC and BCrypt) via Maven or manually.
 
 ### 3. Compilation
-- Compile the Java files with the dependencies in the classpath:
-  ```
-  javac -cp ".;C:\Users\<YourUser>\Desktop\sqljdbc_12.10\enu\jars\mssql-jdbc-12.10.0.jre11.jar;C:\Users\<YourUser>\.m2\repository\org\mindrot\jbcrypt\0.4\jbcrypt-0.4.jar" socket/*.java
-  ```
 
-### 4. Running the Application
-1. **Start the Server**:
-   - Run the server in a terminal:
-     ```
-     java -cp ".;C:\Users\<YourUser>\Desktop\sqljdbc_12.10\enu\jars\mssql-jdbc-12.10.0.jre11.jar;C:\Users\<YourUser>\.m2\repository\org\mindrot\jbcrypt\0.4\jbcrypt-0.4.jar" socket.Server_1
-     ```
-   - The server listens on port 5555 and logs events to `server.log`.
+```bash
+javac -cp ".;path_to_jars/*" socket/*.java
+```
 
-2. **Run Clients**:
-   - Open additional terminals and start clients:
-     ```
-     java -cp ".;C:\Users\<YourUser>\Desktop\sqljdbc_12.10\enu\jars\*.jar;C:\Users\<YourUser>\.m2\repository\org\mindrot\jbcrypt\0.4\*.jar" socket.Client_1
-     ```
-   - Each client connects to `localhost:5555`.
+### 4. Running
+
+**Start Server:**
+
+```bash
+java -cp ".;path_to_jars/*" socket.Server_1
+```
+
+**Start Clients:**
+
+```bash
+java -cp ".;path_to_jars/*" socket.Client_1
+```
+
+---
 
 ## Usage
 
 ### Client Interface
-1. **Authentication**:
-   - Choose `1. Sign Up` or `2. Login`.
-   - **Sign Up**:
-     - Enter a username (3–20 characters, alphanumeric only).
-     - Enter a password (8+ characters, must include letters and numbers).
-     - Example:
-       ```
-       Enter choice: 1
-       Enter new username (3-20 characters, alphanumeric only): mohamed
-       Enter new password (8+ characters, must include letters and numbers): password123
-       Sign Up Successful!
-       ```
-   - **Login**:
-     - Enter existing credentials.
-     - Example:
-       ```
-       Enter choice: 2
-       Enter username: ibrahim
-       Enter password: password123
-       Login Successful!
-       ```
 
-2. **Chatting**:
-   - Upon successful authentication, enter the chat mode:
-     ```
-     You can start chatting now! Type '/help' for commands or 'exit' to quit.
-     ```
-   - **Send Messages**: Enter text to broadcast (e.g., `hi`).
-   - **Commands**:
-     - `/help`: Displays available commands.
-     - `/online`: Lists online users (e.g., `Online users: mohamed, ibrahim`).
-     - `/msg <username> <message>`: Sends a private message (e.g., `/msg ibrahim Hello`).
-     - `/exit`: Disconnects from the server.
-   - **Message Format**: Messages include timestamps (e.g., `[2025-06-11 23:45] mohamed: hi`).
-   - **Private Messages**: Appear as `Private from ibrahim: Hello`.
+1. **Authentication:** Sign Up or Login.
+2. **Commands:**
 
-3. **Disconnecting**:
-   - Type `/exit` or `exit` to leave; other clients are notified (e.g., `[2025-06-11 23:46] User mohamed left the chat.`).
+   * `/help`: Show commands.
+   * `/online`: List online users.
+   * `/msg <username> <message>`: Private message.
+   * `/exit`: Disconnect.
+
+### Example Interaction
+
+```
+1. Sign Up
+2. Login
+Enter choice: 2
+Enter username: ibrahim
+Enter password: password123
+Login Successful!
+```
+
+**Server Log:**
+
+```
+Jun 11, 2025 11:50:12 PM socket.ClientHandler run
+INFO: Signup attempt for user: mohamed
+```
+
+---
 
 ### Example Interaction
 **Server Log (`server.log`)**:
@@ -190,3 +184,50 @@ Sent to ibrahim: Hello
 Private from ibrahim: Hi back!
 /exit
 ```
+
+---
+
+### Test Screenshot
+
+![Test Screenshot](https://raw.githubusercontent.com/eIbrahim67/Multi-Client-Chat-Application/refs/heads/master/app/src/test.png)
+
+---
+
+## Troubleshooting
+
+| Problem                 | Possible Cause                    | Solution                                 |
+| ----------------------- | --------------------------------- | ---------------------------------------- |
+| Port 5555 in use        | Another service using the port    | Change server port in `Server_1.java`    |
+| JDBC Driver Not Found   | Incorrect classpath or dependency | Verify JAR paths or Maven config         |
+| Login Fails             | Incorrect username/password       | Ensure credentials match DB records      |
+| Password Strength Error | Weak password during signup       | Use 8+ chars, letters & numbers required |
+
+---
+
+## To Do / Future Improvements
+
+* JavaFX/Swing GUI.
+* End-to-End encryption.
+* File transfer capability.
+* Dockerized server deployment.
+
+---
+
+## License
+
+```
+MIT License © 2025 Ibrahim Mohamed Ibrahim
+```
+
+---
+
+## Author & Contact
+
+```
+Developed by: Ibrahim Mohamed Ibrahim
+GitHub: https://github.com/eIbrahim67
+LinkedIn: https://www.linkedin.com/in/eibrahim67
+Email: ibrahim.mohamed.ibrahim.t@gmail.com
+```
+
+---
