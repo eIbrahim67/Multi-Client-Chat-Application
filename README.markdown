@@ -157,7 +157,21 @@ Jun 11, 2025 11:45:40 PM socket.Server_1 broadcast
 INFO: Broadcast: [2025-06-11 23:45] mohamed: hi
 ```
 
-**Client 1 (`mohamed`)**:
+**Client 1 (`ibrahim`)**:
+```
+1. Sign Up
+2. Login
+Enter choice: 2
+Enter username: ibrahim
+Enter password: password123
+Login Successful!
+You can start chatting now! Type '/help' for commands or 'exit' to quit.
+[2025-06-11 23:45] mohamed: hi
+hello
+Private from mohamed
+```
+
+**Client 2 (`mohamed`)**:
 ```
 1. Sign Up
 2. Login
@@ -176,16 +190,3 @@ Sent to ibrahim: Hello
 Private from ibrahim: Hi back!
 /exit
 ```
-
-**Client 2 (`ibrahim`)**:
-```
-1. Sign Up
-2. Login
-Enter choice: 2
-Enter username: ibrahim
-Enter password: password123
-Login Successful!
-You can start chatting now! Type '/help' for commands or 'exit' to quit.
-[2025-06-11 23:45] mohamed: hi
-hello
-Private from mohamed
