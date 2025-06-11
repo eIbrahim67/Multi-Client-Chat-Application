@@ -39,7 +39,7 @@ This project was developed to demonstrate client-server architecture, multi-thre
           \                        /
            +----------------------+
                      |
-                 Database (SQL Server)
+            Database (SQL Server)
 ```
 
 ---
